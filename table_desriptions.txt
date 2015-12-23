@@ -1,0 +1,48 @@
+submit_tbl
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| date   | varchar(32)  | YES  |     | NULL    |       |
+| ppl    | varchar(128) | YES  |     | NULL    |       |
+| pro_id | varchar(8)   | YES  |     | NULL    |       |
+| lang   | varchar(16)  | YES  |     | NULL    |       |
+| result | varchar(128) | YES  |     | NULL    |       |
+| tm     | varchar(32)  | YES  |     | NULL    |       |
+| mm     | varchar(32)  | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+
+problem_tbl;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| id         | varchar(8)   | NO   |     | NULL    |       |
+| contest_id | varchar(8)   | YES  |     | NULL    |       |
+| title      | varchar(128) | NO   |     | NULL    |       |
+| tm         | varchar(32)  | YES  |     | NULL    |       |
+| mm         | varchar(32)  | YES  |     | NULL    |       |
+| inf        | varchar(32)  | YES  |     | NULL    |       |
+| outf       | varchar(32)  | YES  |     | NULL    |       |
+| content    | text         | NO   |     | NULL    |       |
+| inspec     | text         | YES  |     | NULL    |       |
+| outspec    | text         | YES  |     | NULL    |       |
+| note       | text         | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+
+contest_tbl;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| id       | varchar(8)   | NO   |     | NULL    |       |
+| name     | varchar(128) | NO   |     | NULL    |       |
+| tm       | varchar(32)  | NO   |     | NULL    |       |
+| duration | varchar(16)  | NO   |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+
+example_tbl;
++--------+------------+------+-----+---------+-------+
+| Field  | Type       | Null | Key | Default | Extra |
++--------+------------+------+-----+---------+-------+
+| pro_id | varchar(8) | NO   |     | NULL    |       |
+| in_eg  | text       | NO   |     | NULL    |       |
+| out_eg | text       | NO   |     | NULL    |       |
++--------+------------+------+-----+---------+-------+

@@ -62,6 +62,7 @@ class ProblemSpider(scrapy.Spider):
         item['content'] = ""
         for s in response.xpath(content_xpath).extract():
             item['content'] += s
+        item['content'] = item['content'].strip()
 
         item['inspec'] = ""
         for s in response.xpath(inspec_xpath).extract():
@@ -70,16 +71,18 @@ class ProblemSpider(scrapy.Spider):
         item['outspec'] = ""
         for s in response.xpath(outspec_xpath).extract():
             item['outspec'] += s
+        item['outspec'] = item['outspec'].strip()
 
         item['note'] = ""
         for s in response.xpath(note_xpath).extract():
             item['note'] += s
+        item['note'] = item['note'].strip()
 
         item['in_eg'] = []
         item['out_eg'] = []
         for sel1, sel2 in zip(response.xpath(ineg_xpath), response.xpath(outeg_xpath)):
-            item['in_eg'].append("\n".join(sel1.xpath('pre//text()').extract()))
-            item['out_eg'].append("\n".join(sel2.xpath('pre//text()').extract()))
+            item['in_eg'].append("\n".join(sel1.xpath('pre//text()').extract()).strip())
+            item['out_eg'].append("\n".join(sel2.xpath('pre//text()').extract()).strip())
 
         yield item
 
