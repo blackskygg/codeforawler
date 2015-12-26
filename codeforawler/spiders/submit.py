@@ -12,9 +12,17 @@ class SubmitSpider(scrapy.Spider):
     name = "submit"
     allowed_domains = ["www.codeforces.com"]
     start_urls = []
-    rd = redis.Redis()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, rdhost='localhost', *args, **kwargs):
+        self.rd = redis.Redis(host = rdhost)
+
+        #the latest contest id  we have
+        self.latest_id = self.rd.get("submit_latest_id");
+
+        #check the stop sign
+        if self.rd.get("submit_stop"):
+            return
+
         index = self.rd.incr("status_index")
         self.start_urls.append(url_base % index)
         super(SubmitSpider, self).__init__(*args, **kwargs)
@@ -33,6 +41,13 @@ class SubmitSpider(scrapy.Spider):
         flag = 0
         for sel in response.xpath(entry_xpath):
             flag = 1
+            #first check if we are continue to crawl
+
+            id =  int(sel.xpath('td[1]/a/text()').extract()[0].strip());
+            if id <= self.latest_id:
+                self.rd.set("submit_stop", "1")
+                return
+
             item['date'] = sel.xpath('td[2]//text()').extract()[0].strip()
 
             item['ppl'] = ""

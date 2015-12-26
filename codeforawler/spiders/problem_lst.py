@@ -11,8 +11,16 @@ class ProblemLstSpider(scrapy.Spider):
     start_urls = []
     rd = redis.Redis()
 
-    def __init__(self, max_index = 26,  *args, **kwargs):
+    def __init__(self, max_index = 26, rdhost='localhost', *args, **kwargs):
+        self.rd = redis.Redis(host = rdhost)
         self.max_index = max_index
+
+        #the latest contest id  we have
+        self.latest_id = self.rd.get("contest_latest_id");
+
+        #check the stop sign
+        if self.rd.get("problemset_stop"):
+            return
 
         index = self.rd.incr("problemset_index")
         if index > self.max_index:
@@ -39,6 +47,15 @@ class ProblemLstSpider(scrapy.Spider):
             if len(problem_url) == 0:
                 continue
             problem_url = response.urljoin(problem_url[0])
+
+            #extract the contest id and see if we've already crawled it
+            url_parts = problem_url.split("/")
+            url_len = len(url_parts)
+            contest_id = url_parts[url_len-2]
+            if contest_id <= self.latest_id:
+                self.rd.set("problem_stop", "1")
+                return
+
             self.rd.rpush("problem_list", problem_url)
 
         #get more work from server

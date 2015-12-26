@@ -23,9 +23,10 @@ class ProblemSpider(scrapy.Spider):
     name = "problem"
     allowed_domains = ["www.codeforces.com"]
     start_urls = []
-    rd = redis.Redis()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, rdhost='localhost', *args, **kwargs):
+        self.rd = redis.Redis(host = rdhost)
+
         src, url = self.rd.blpop("problem_list")
         self.start_urls.append(url)
         super(ProblemSpider, self).__init__(*args, **kwargs)

@@ -102,6 +102,3 @@ class SQLPipeline(object):
     def close_spider(self, spider):
         self.conn.commit()
         self.conn.close()
-
-
-
